@@ -78,10 +78,10 @@ int main()
     }
     
     // 로그 출력
-    for (int i = 0; i < InjectionStat.size(); ++i)
-    {
-        cout << InjectionStat[i] << "\n";
-    }
+    // for (int i = 0; i < InjectionStat.size(); ++i)
+    // {
+    //     cout << InjectionStat[i] << "\n";
+    // }
 #pragma endregion
     
     
@@ -92,8 +92,8 @@ int main()
     // 포션 충전
     setPotion(5, &HPPotion, &MPPotion);
     
-    // 확인용
-    cout << HPPotion << MPPotion << "\n";
+    // 확인용 로그
+    // cout << HPPotion << MPPotion << "\n";
     
     while (CurrentKeyNumber != 0)
     {
@@ -135,6 +135,9 @@ int main()
             setPotion(1, &HPPotion, &MPPotion);
             cout << "남은 HP/MP 포션 수 :" << GetPotion(&HPPotion,nullptr) << "/" << GetPotion(nullptr,&MPPotion) << "\n";
             break;
+        default:
+            cout << "유효하지 않은 입력 값 입니다." << "\n";
+            break;
         }
     }
     
@@ -156,10 +159,22 @@ void setPotion(int count, int* p_HPPotion, int* p_MPPotion)
     if (p_HPPotion)
     {
         *p_HPPotion += count;
+        if (*p_HPPotion < 0)
+        {
+            *p_HPPotion = 0;
+            cout << "포션이 없습니다." << "\n";
+            return;
+        }
     }
     if (p_MPPotion)
     {
         *p_MPPotion += count;
+        if (*p_MPPotion < 0)
+        {
+            *p_MPPotion = 0;
+            cout << "포션이 없습니다." << "\n";
+            return;
+        }
     }
 }
 
@@ -180,14 +195,18 @@ void UsePotion(E_PotionType Potion_Type, int count, int* p_HPPotion,int* p_MPPot
     switch (Potion_Type)
     {
     case E_PotionType::HP_Potion :
+        if (*p_HPPotion > 0)
         Player->SetStat(E_Stat::HP, PotionHealingValue);
+        
         cout << "HP가" << PotionHealingValue << "증가되었습니다. 포션이" << count << "개 차감됩니다." << "\n";
         setPotion(-count, p_HPPotion,nullptr);
         cout << "현재 HP: " << Player->GetStat(E_Stat::HP) << "\n";
         cout << "남은 포션: " << GetPotion(p_HPPotion, nullptr) << "\n";
         break;
     case E_PotionType::MP_Potion :
+        if (*p_MPPotion > 0)
         Player->SetStat(E_Stat::MP, PotionHealingValue);
+        
         cout << "MP가" << PotionHealingValue << "증가되었습니다. 포션이" << count << "개 차감됩니다." << "\n";
         setPotion(-count, nullptr,p_MPPotion);
         cout << "현재 MP: " << Player->GetStat(E_Stat::MP) << "\n";
