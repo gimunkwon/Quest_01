@@ -14,7 +14,9 @@ enum class E_PotionType : uint8_t
     MP_Potion,
 };
 
+// 스탯값의 유효성 검사를 위한 변수
 static int temp1{}, temp2{};
+// 현재 입력된 숫자 값이 무엇인지에 대한 변수
 static int CurrentKeyNumber{1};
 
 #pragma region Function
@@ -148,6 +150,7 @@ int main()
 }
 #pragma endregion
 
+#pragma region function
 void ShowStatText(const string text1, const string text2)
 {
     cout << text1 << +"와(과)" << text2 << +"를(을)" << +"입력 해주세요 : " << " ";
@@ -229,6 +232,8 @@ void GrowStat(E_Stat GrowType, int value, Character* Player)
         Player->SetStat(E_Stat::ArmorPower, value);
         cout << "현재 방어력 :" << Player->GetStat(E_Stat::ArmorPower) << "\n";
         break;
+    default:
+        break;
     }
 }
 
@@ -237,5 +242,6 @@ void LevelUp(Character* Player)
     Player->SetStat(E_Stat::Level, 1);
     cout << "레벨업! HP/MP포션이 지급됩니다." << "\n";
 }
+#pragma endregion
 
 
